@@ -64,7 +64,7 @@ IADA is an iterative aggregation/disaggregation algorithm to solve pseudo-polyno
 
 [MIM](https://sites.google.com/view/jfcote/) is an algorithm based on an arc-flow formulation with Meet-in-the-Middle patterns and further reduction crieria, solved through an ILP solver (Cplex in the provided implementation). It was proposed by J. F. Côté and M. Iori in [The Meet-in-the-Middle Principle for Cutting and Packing Problems](https://pubsonline.informs.org/doi/10.1287/ijoc.2018.0806). *INFORMS Journal on Computing*, 30(4): 646-661, 2018.
 
-[REFLECT](https://github.com/mdelorme2/Extending-the-reflect-flow-formulation-to-variable-sized-1D-cutting-and-skiving-stock-problems/tree/main/1_CSP-SSP/3_REFLECT) is an algorithm based on a pseudo-polynomial formulation of the CSP solved through an ILP solver. It uses the model proposed by M. Delorme and M. Iori in [Enhanced Pseudo-Polynomial Formulations for Bin Packing and Cutting Stock Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2018.0880). *INFORMS Journal on Computing*, 32(1):101-119, 2020.
+[REFLECT](REFLECT.rar) is an algorithm based on a pseudo-polynomial formulation of the CSP solved through an ILP solver. It uses the model proposed by M. Delorme and M. Iori in [Enhanced Pseudo-Polynomial Formulations for Bin Packing and Cutting Stock Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2018.0880). *INFORMS Journal on Computing*, 32(1):101-119, 2020.
 
 EXM is a branch-and-price-and-cut algorithm to solve the BPP. It was proposed by L. Wei, Z. Luo , R. Baldacci, and A. Lim in [A New Branch-and-Price-and-Cut Algorithm for One-Dimensional Bin-Packing Problems](https://pubsonline.informs.org/doi/10.1287/ijoc.2018.0867). *INFORMS Journal on Computing*, 32(2):428-443, 2020.
 
