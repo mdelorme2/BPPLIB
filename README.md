@@ -1,17 +1,19 @@
-[![INFORMS Journal on Computing Logo](https://INFORMSJoC.github.io/logos/INFORMS_Journal_on_Computing_Header.jpg)](https://pubsonline.informs.org/journal/ijoc)
+# BPPLIB – A Bin Packing Problem Library
 
-# Mathematical models and exact algorithms for kidney exchange problems with immunosuppressants
+Page maintained by M. Delorme (m.delorme@tilburguniversity.edu), M. Iori (manuel.iori@unimore.it), and S. Martello (silvano.martello@unibo.it). 
 
-This archive is distributed in association with the [INFORMS Journal on
-Computing](https://pubsonline.informs.org/journal/ijoc) under the [Creative Commons Attribution (CC BY)](LICENSE).
+The BPPLIB is a collection of codes, benchmarks, and links for the one-dimensional Bin Packing and Cutting Stock problem. 
 
-The software and data in this repository are a snapshot of the software and data
-that were used in the research reported on in the paper 
-[Mathematical models and exact algorithms for kidney exchange problems with immunosuppressants](https://doi.org/10.1287/ijoc.2024.1071) by Maxence Delorme, Wendy Liu and David Manlove.
+If you need to refer to material taken from this library, please cite M. Delorme, M. Iori, and S. Martello. BPPLIB: A library for bin packing and cutting stock problems. Optimization Letters, 12(2):235-250, 2018.
 
-**Important: This code is being developed on an on-going basis at 
-https://github.com/mdelorme2/Mathematical_models_and_exact_algorithms_for_kidney_exchange_problems_with_immunosuppressants. Please go there if you would like to
-get a more recent version or would like support.**
+
+## Problem description
+
+The bin packing problem (BPP) can be informally defined in a very simple way. We are given $n$ items, each having an integer weight $w_j (j = 1, ..., n)$, and an unlimited number of identical bins of integer capacity $c$. The objective is to pack all the items into the minimum number of bins so that the total weight packed in any bin does not exceed the capacity.
+
+Similarly, in the cutting stock problem (CSP), we are given $m$ item types, each having an integer weight $w_j$ and an integer demand $d_j (j = 1, ..., m)$, and an unlimited number of identical bins (frequently called rolls in the literature) of integer capacity $c$. The objective is to produce $d_j$ copies of each item type $j$ using the minimum number of bins so that the total weight packed in any bin does not exceed its capacity. A CSP instance can be easily transformed into an equivalent BPP instance and vice-versa.
+
+For a recent survey on these problems, see M. Delorme, M. Iori, and S. Martello. [Bin Packing and Cutting Stock Problems: Mathematical Models and Exact Algorithms](https://www.sciencedirect.com/science/article/pii/S0377221716302491). European Journal of Operational Research, 255(1):1–20, 2016.
 
 ## Cite
 
