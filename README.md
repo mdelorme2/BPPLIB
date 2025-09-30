@@ -28,7 +28,7 @@ R.W. Haessler and P.E. Sweeney. [Cutting stock problems and solution procedures]
 
 H. Dyckhoff. [A typology of cutting and packing problems](http://sciencedirect.com/science/article/pii/037722179090350K). *European Journal of Operational Research*, 44(2):145–159, 1990.
 
-E.G. Coffman Jr., M.R. Garey, and D.S. Johnson. [Approximation algorithms for bin packing - an updated survey]. In G. Ausiello, M. Lucertini, and P. Serafini, editors, *Algorithm Design for Computer System Design*, pages 49–106, Springer Vienna, 1984.
+E.G. Coffman Jr., M.R. Garey, and D.S. Johnson. [Approximation algorithms for bin packing - an updated survey](https://link.springer.com/chapter/10.1007/978-3-7091-4338-4_3). In G. Ausiello, M. Lucertini, and P. Serafini, editors, *Algorithm Design for Computer System Design*, pages 49–106, Springer Vienna, 1984.
 
 ## Codes 
 
