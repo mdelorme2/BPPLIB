@@ -70,7 +70,7 @@ EXM is a branch-and-price-and-cut algorithm to solve the BPP. It was proposed by
 
 [VRPSolver](https://vrpsolver.math.u-bordeaux.fr/) is a branch-and-price-and-cut algorithm to solve the vehicle routing and other related problems (including the BPP). It uses the techniques proposed by A. Pessoa, R. Sadykov, E. Uchoa, and F. Vanderbeck in [A generic exact solver for vehicle routing and related problems](https://link.springer.com/article/10.1007/s10107-020-01523-z). *Mathematical Programming*, 183:483–523, 2020.
 
-NF-F is a branch-and-price algorithm to solve certain packing problems (including the BPP). It uses the techniques proposed by V.L. de Lima, M. Iori, and F.K. Miyazawa in [Exact solution of network flow models with strong relaxations](https://link.springer.com/article/10.1007/s10107-022-01785-9). *Mathematical Programming*, 197:813–846, 2022.
+NF-F is a branch-and-price algorithm to solve pseudo-polynomial network flow models with strong relaxations (including the BPP). It uses the techniques proposed by V.L. de Lima, M. Iori, and F.K. Miyazawa in [Exact solution of network flow models with strong relaxations](https://link.springer.com/article/10.1007/s10107-022-01785-9). *Mathematical Programming*, 197:813–846, 2022.
 
 [BCCF](https://github.com/stefanoconiglio/A-Numerically-Exact-Algorithm-for-the-Bin-Packing-Problem) is a numerically exact branch-and-price algorithm to solve the BPP. It uses the techniques proposed by R. Baldacci, S. Coniglio , J.-F. Cordeau , and F. Furini in [A Numerically Exact Algorithm for the Bin-Packing Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2022.0257). *INFORMS Journal on Computing*, 36(1): 141-162, 2023.
 
