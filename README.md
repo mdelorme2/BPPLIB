@@ -4,7 +4,7 @@ This page maintained by M. Delorme (m.delorme@tilburguniversity.edu), M. Iori (m
 
 The BPPLIB is a collection of codes, benchmarks, and links for the one-dimensional Bin Packing and Cutting Stock problem. 
 
-If you need to refer to material taken from this library, please cite M. Delorme, M. Iori, and S. Martello. [BPPLIB: A library for bin packing and cutting stock problems](https://link.springer.com/article/10.1007/s11590-017-1192-z). Optimization Letters, 12(2):235-250, 2018.
+If you need to refer to material taken from this library, please cite M. Delorme, M. Iori, and S. Martello. [BPPLIB: A library for bin packing and cutting stock problems](https://link.springer.com/article/10.1007/s11590-017-1192-z). *Optimization Letters*, 12(2):235-250, 2018.
 
 
 ## Problem description
@@ -13,7 +13,7 @@ The bin packing problem (BPP) can be informally defined in a very simple way. We
 
 Similarly, in the cutting stock problem (CSP), we are given $m$ item types, each having an integer weight $w_j$ and an integer demand $d_j (j = 1, ..., m)$, and an unlimited number of identical bins (frequently called rolls in the literature) of integer capacity $c$. The objective is to produce $d_j$ copies of each item type $j$ using the minimum number of bins so that the total weight packed in any bin does not exceed its capacity. A CSP instance can be easily transformed into an equivalent BPP instance and vice-versa.
 
-For a recent survey on these problems, see M. Delorme, M. Iori, and S. Martello. [Bin Packing and Cutting Stock Problems: Mathematical Models and Exact Algorithms](https://www.sciencedirect.com/science/article/pii/S0377221716302491). European Journal of Operational Research, 255(1):1–20, 2016.
+For a recent survey on these problems, see M. Delorme, M. Iori, and S. Martello. [Bin Packing and Cutting Stock Problems: Mathematical Models and Exact Algorithms](https://www.sciencedirect.com/science/article/pii/S0377221716302491). *European Journal of Operational Research*, 255(1):1–20, 2016.
 
 ## Cite
 
