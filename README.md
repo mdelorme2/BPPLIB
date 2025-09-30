@@ -1,11 +1,10 @@
 # BPPLIB – A Bin Packing Problem Library
 
-This page maintained by M. Delorme (m.delorme@tilburguniversity.edu), M. Iori (manuel.iori@unimore.it), and S. Martello (silvano.martello@unibo.it). 
-
 The BPPLIB is a collection of codes, benchmarks, and links for the one-dimensional Bin Packing and Cutting Stock problem. 
 
 If you need to refer to material taken from this library, please cite M. Delorme, M. Iori, and S. Martello. [BPPLIB: A library for bin packing and cutting stock problems](https://link.springer.com/article/10.1007/s11590-017-1192-z). *Optimization Letters*, 12(2):235-250, 2018.
 
+This page maintained by M. Delorme (m.delorme@tilburguniversity.edu), M. Iori (manuel.iori@unimore.it), and S. Martello (silvano.martello@unibo.it).
 
 ## Problem description
 
