@@ -90,7 +90,7 @@ All instances are given in the two following formats:
 
 and can be downloaded from [here](Instances/Benchmarks) in both the BPP and the CSP formats.
 
-**Falkenauer** are the instances used by E. Falkenauer in [A hybrid grouping genetic algorithm for bin packing](https://link.springer.com/article/10.1007/BF00226291). *Journal of Heuristics*, 2(1):5–30, 1996. They were downloaded from the [OR-library](https://people.brunel.ac.uk/~mastjjb/jeb/info.html). They are divided into two classes of 80 instances each: the first class has uniformly distributed item sizes (**Falkenauer U**) with $n$ between 120 and 1000, and c = 150. The instances of the second class (``Falkenauer T'') includes the so-called triplets, i.e., groups of three items (one large, two small) that need to be assigned to the same bin in any optimal packing, with $n$ between 60 and 501, and c = 1000.
+**Falkenauer** are the instances used by E. Falkenauer in [A hybrid grouping genetic algorithm for bin packing](https://link.springer.com/article/10.1007/BF00226291). *Journal of Heuristics*, 2(1):5–30, 1996. They were downloaded from the [OR-library](https://people.brunel.ac.uk/~mastjjb/jeb/info.html). They are divided into two classes of 80 instances each: the first class has uniformly distributed item sizes (**Falkenauer U**) with $n$ between 120 and 1000, and c = 150. The instances of the second class (**Falkenauer T**) includes the so-called triplets, i.e., groups of three items (one large, two small) that need to be assigned to the same bin in any optimal packing, with $n$ between 60 and 501, and c = 1000.
 
 **Scholl** are the instances used by A. Scholl, R. Klein, and C. Jürgens in [Bison: a fast hybrid procedure for exactly solving the one-dimensional bin packing problem](https://www.sciencedirect.com/science/article/pii/S0305054896000822). *Computers & Operations Research*, 24(7):627–645, 1997. They are divided into three sets of 720, 480, and 10, respectively, uniformly distributed instances with $n$ between 50 and 500. The capacity $c$ is between 100 and 150 (set **Scholl 1**), equal to 1000 (set **Scholl 2**), and equal to 100 000 (set **Scholl 3**), respectively.
 
@@ -135,4 +135,4 @@ The easiest way to test BppGame is to execute the following sequence of actions:
 
 # Remarks, questions, suggestions
 
-Please send an email to m.delorme[at]tilburguniversity[dot]edu with object "BPPLIB".
+Please send an email to m.delorme[at]tilburguniversity[dot]edu with subject "BPPLIB".
