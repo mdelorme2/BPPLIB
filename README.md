@@ -131,7 +131,7 @@ The easiest way to test BppGame is to execute the following sequence of actions:
 - Click on "BppGame-1.3.2"
 - Click on "bin"
 - Execute "BppGame.bat" (Windows) or "BppGame" (Linux)
-- Click on "Sample problems". 
+- Click on "Sample problems" 
 
 # Remarks, questions, suggestions
 
