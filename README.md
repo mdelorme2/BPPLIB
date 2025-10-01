@@ -127,12 +127,11 @@ Here are some interesting links related to the BPP and the CSP:
 An open source visual ScalaFX application to interactively solve BPP and CSP instances can be downloaded, as a compressed file, from [here](Others). The application is derived from a more general tool for the solution of two-dimensional packing problems proposed by G. Costa, M. Delorme, M. Iori, E. Malaguti, and S. Martello in [Training software for orthogonal packing problems](https://www.sciencedirect.com/science/article/pii/S0360835217302887). *Computers & Industrial Engineering*, 111:139-147, 2017.
 
 The easiest way to test BppGame is to execute the following sequence of actions:
-
-Click on "Bin Packing Problem" and extract its contents
-Click on "BppGame-1.3.2"
-Click on "bin"
-Execute "BppGame.bat" (Windows) or "BppGame" (Linux)
-Click on "Sample problems". 
+- Click on "Bin Packing Problem" and extract its contents
+- Click on "BppGame-1.3.2"
+- Click on "bin"
+- Execute "BppGame.bat" (Windows) or "BppGame" (Linux)
+- Click on "Sample problems". 
 
 # Remarks, questions, suggestions
 
