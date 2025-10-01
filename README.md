@@ -108,6 +108,32 @@ and can be downloaded from [here](Instances/Benchmarks) in both the BPP and the 
 
 The solution of all instances can be found [here](Instances/Solutions). 
 
-## Remarks, questions, suggestions
+## Problem generators
 
-Please send an email to m.delorme[at]tilburguniversity[dot]edu with object ``BPPLIB''
+**BPPGEN** is a problem generator for the BPP proposed by P. Schwerin and G. Wäscher in [The bin-packing problem: a problem generator and some numerical experiments with FFD packing and MTP](https://www.sciencedirect.com/science/article/pii/S0969601697000257). *International Transactions in Operational Research*, 4(5–6):377–389, 1997.
+
+**CUTGEN1** is a problem generator for the CSP proposed by T. Gau and G. Waescher in [CUTGEN1: A Problem Generator for the Standard One-dimensional Cutting Stock Problem](https://www.sciencedirect.com/science/article/pii/037722179500023J). *European Journal of Operational Research*, 84(3):572-579, 1995.
+
+## Bibliography and useful links
+
+[This](Others) is a BibTex file of relevant references for the bin packing and the cutting stock problems up to 2016.
+
+Here are some interesting links related to the BPP and the CSP:
+- [ESICUP](https://www.euro-online.org/websites/esicup/)
+- [OR-library](https://people.brunel.ac.uk/~mastjjb/jeb/info.html)
+
+## BppGame: An interactive visual solver
+
+An open source visual ScalaFX application to interactively solve BPP and CSP instances can be downloaded, as a compressed file, from [here](Others). The application is derived from a more general tool for the solution of two-dimensional packing problems proposed by G. Costa, M. Delorme, M. Iori, E. Malaguti, and S. Martello in [Training software for orthogonal packing problems](https://www.sciencedirect.com/science/article/pii/S0360835217302887). *Computers & Industrial Engineering*, 111:139-147, 2017.
+
+The easiest way to test BppGame is to execute the following sequence of actions:
+
+Click on "Bin Packing Problem" and extract its contents
+Click on "BppGame-1.3.2"
+Click on "bin"
+Execute "BppGame.bat" (Windows) or "BppGame" (Linux)
+Click on "Sample problems". 
+
+# Remarks, questions, suggestions
+
+Please send an email to m.delorme[at]tilburguniversity[dot]edu with object "BPPLIB".
