@@ -70,7 +70,7 @@ VRPSolver is a branch-and-price-and-cut algorithm to solve the vehicle routing a
 
 NF-F is a branch-and-price algorithm to solve pseudo-polynomial network flow models with strong relaxations (including the BPP). It uses the techniques proposed by V.L. de Lima, M. Iori, and F.K. Miyazawa in [Exact solution of network flow models with strong relaxations](https://link.springer.com/article/10.1007/s10107-022-01785-9). *Mathematical Programming*, 197:813–846, 2022. The code is not available online, but it can be obtained from the authors upon request.
 
-BCCF is a numerically exact branch-and-price algorithm to solve the BPP. It uses the techniques proposed by R. Baldacci, S. Coniglio , J.-F. Cordeau , and F. Furini in [A Numerically Exact Algorithm for the Bin-Packing Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2022.0257). *INFORMS Journal on Computing*, 36(1): 141-162, 2023. The code is available on an [external website]((https://github.com/stefanoconiglio/A-Numerically-Exact-Algorithm-for-the-Bin-Packing-Problem).
+BCCF is a numerically exact branch-and-price algorithm to solve the BPP. It uses the techniques proposed by R. Baldacci, S. Coniglio , J.-F. Cordeau , and F. Furini in [A Numerically Exact Algorithm for the Bin-Packing Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2022.0257). *INFORMS Journal on Computing*, 36(1): 141-162, 2023. The code is available on an [external website](https://github.com/stefanoconiglio/A-Numerically-Exact-Algorithm-for-the-Bin-Packing-Problem).
 
 ## Benchmarks
 
