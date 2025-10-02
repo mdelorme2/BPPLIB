@@ -34,7 +34,7 @@ E.G. Coffman Jr., M.R. Garey, and D.S. Johnson. [Approximation algorithms for bi
 
 ### Branch-and-bound
 
-MTP is a branch-and-bound algorithm for the BPP proposed by S. Martello and P. Toth in [Knapsack Problems: Algorithms and Computer Implementations](https://silvano333.github.io/kp.html). John Wiley & Sons, Chichester, 1990. The code is not available online, but it can be obtained from the authors upon request.
+[MTP](Codes) is a branch-and-bound algorithm for the BPP proposed by S. Martello and P. Toth in [Knapsack Problems: Algorithms and Computer Implementations](https://silvano333.github.io/kp.html). John Wiley & Sons, Chichester, 1990.
 
 BISON is a branch-and-bound algorithm for the BPP proposed by A. Scholl, R. Klein, and C. Jürgens in [Bison: a fast hybrid procedure for exactly solving the one-dimensional bin packing problem](https://www.sciencedirect.com/science/article/pii/S0305054896000822). *Computers & Operations Research*, 24(7):627-645, 1997. The code is not available online, but it can be obtained from the authors upon request.
 
