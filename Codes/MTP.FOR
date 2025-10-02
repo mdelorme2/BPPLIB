@@ -1,0 +1,553 @@
+      SUBROUTINE MTP2(N,W,C,Z,XSTAR,JDIM,BACK,JCK,LB,
+     1               WR,XSTARR,DUM,RES,REL,X,R,WA,WB,KFIX,FIXIT,
+     2               XRED,LS,LSB,XHEU)
+C
+C Procedura MTP modificata per velocizzarla nel caso di molti pezzi uguali.
+C
+C THIS SUBROUTINE SOLVES THE BIN PACKING PROBLEM
+C
+C MINIMIZE Z = Y(1) + ... + Y(N)
+C
+C SUBJECT TO:
+C
+C        W(1)*X(I,1) + ... + W(N)*X(I,N) .LE. C*Y(I)  FOR I=1,...,N,
+C        X(1,J) + ... + X(M,J) = 1                    FOR J=1,...,N,
+C        Y(I) = 0 OR 1                                FOR I=1,...,N,
+C        X(I,J) = 0 OR 1                   FOR I=1,...,N, J=1,...,N
+C
+C (I.E., MINIMIZE THE NUMBER OF BINS OF CAPACITY  C  NEEDED TO ALLOCATE
+C  N  ITEMS OF SIZE  W(1),...,W(N) ).
+C
+C THE PROGRAM IS INCLUDED IN THE VOLUME
+C   S. MARTELLO, P. TOTH, "KNAPSACK PROBLEMS: ALGORITHMS
+C   AND COMPUTER IMPLEMENTATIONS", JOHN WILEY, 1990
+C AND IMPLEMENTS THE BRANCH-AND-BOUND ALGORITHM DESCRIBED
+C IN SECTION 8.5 .
+C
+C THE INPUT PROBLEM MUST SATISFY THE CONDITIONS
+C
+C   1) 2 .LE. N .LE. JDIM;
+C   2) W(J) AND C POSITIVE INTEGERS;
+C   3) W(J) .LE. C FOR J=1,..., N;
+C   4) W(J) .GE. W(J+1) FOR J=1,...,N-1.
+C
+C IN THE OUTPUT SOLUTION (SEE BELOW) THE  Z  LOWEST INDEXED BINS ARE
+C USED.
+C
+C MTP CALLS 14 PROCEDURES: CHMTP, ENUMER, FFDLS, FIXRED, HBFDS,
+C                          INSERT, LCL2, L2, L3, MWFDS, RESTOR,
+C                          SEARCH, SORTI2 AND UPDATE.
+C
+C THE PROGRAM IS COMPLETELY SELF-CONTAINED AND COMMUNICATION TO IT IS
+C ACHIEVED SOLELY THROUGH THE PARAMETER LIST OF MTP.
+C NO MACHINE-DEPENDENT CONSTANT IS USED .
+C THE PROGRAM IS WRITTEN IN 1967 AMERICAN NATIONAL STANDARD FORTRAN
+C AND IS ACCEPTED BY THE PFORT VERIFIER (PFORT IS THE PORTABLE
+C SUBSET OF ANSI DEFINED BY THE ASSOCIATION FOR COMPUTING MACHINERY).
+C THE PROGRAM HAS BEEN TESTED ON A DIGITAL VAX 11/780 AND AN H.P.
+C 9000/840.
+C
+C MTP NEEDS 17 ARRAYS ( W ,  XSTAR ,  WR,  XSTARR ,  DUM ,  RES ,
+C                       REL ,  X ,  R ,  WA ,  WB ,  KFIX ,  FIXIT ,
+C                       XRED ,  LS ,  LSB  AND  XHEU ) OF LENGTH
+C                       AT LEAST  JDIM .
+C
+C MEANING OF THE INPUT PARAMETERS:
+C N        = NUMBER OF ITEMS;
+C W(J)     = WEIGHT OF ITEM J;
+C C        = CAPACITY OF THE BINS;
+C JDIM     = DIMENSION OF THE 17 ARRAYS;
+C BACK     = - 1 IF EXACT SOLUTION IS REQUIRED,
+C          = MAXIMUM NUMBER OF BACKTRACKINGS TO BE PERFORMED,
+C            IF HEURISTIC SOLUTION IS REQUIRED;
+C JCK      = 1 IF CHECK ON THE INPUT DATA IS DESIRED,
+C          = 0 OTHERWISE.
+C
+C MEANING OF THE OUTPUT PARAMETERS:
+C Z        = VALUE OF THE SOLUTION FOUND IF Z .GT. 0 ,
+C          = ERROR IN THE INPUT DATA (WHEN JCK=1) IF Z .LT. 0 : CONDI-
+C            TION  - Z  IS VIOLATED;
+C XSTAR(J) = BIN WHERE ITEM J IS INSERTED IN THE SOLUTION FOUND;
+C LB       = LOWER BOUND ON THE OPTIMAL SOLUTION VALUE.
+C
+C ALL THE ARRAYS EXCEPT W AND XSTAR ARE DUMMY.
+C
+C ALL THE PARAMETERS ARE INTEGER. ON RETURN OF MTP ALL THE INPUT
+C PARAMETERS ARE UNCHANGED EXCEPT  BACK , WHICH GIVES THE NUMBER OF
+C BACKTRACKINGS PERFORMED.
+C
+      INTEGER W(JDIM),XSTAR(JDIM),C,Z,BACK
+      INTEGER WR(JDIM),XSTARR(JDIM),DUM(JDIM),VSTAR
+      INTEGER RES(JDIM),REL(JDIM),X(JDIM),R(JDIM),WA(JDIM),WB(JDIM),
+     1        KFIX(JDIM),FIXIT(JDIM),XRED(JDIM),LS(JDIM),LSB(JDIM),
+     2        XHEU(JDIM)
+      
+      Z = 0
+      IF ( JCK .EQ. 1 ) CALL CHMTP(N,W,C,JDIM,Z)
+      IF ( Z .LT. 0 ) RETURN
+      LBSTAR = 0
+      NN = 9*N/10
+      IF ( W(1) + W(NN) .GE. C ) GO TO 40
+C
+C TRY A QUICK SOLUTION.
+C
+C HEURISTIC.
+      CALL FFDLS(N,W,C,Z,R,XSTAR,LS,LSB,JDIM)
+C LOWER BOUND L1.
+      ISUMR = 0
+      DO 10 J=1,Z
+        ISUMR = ISUMR + R(J)
+   10 CONTINUE
+      ISUM = Z*C - ISUMR
+      LBSTAR = (ISUM - 1)/C + 1
+      IF ( LBSTAR .EQ. Z ) GO TO 70
+C IMPROVED LOWER BOUND.
+      ISS = 0
+      DO 20 I=1,N
+        IF ( W(I) + W(N) .LE. C ) GO TO 30
+        ISS = ISS + W(I)
+   20 CONTINUE
+      GO TO 70
+   30 ISS = ISUM - ISS
+      LBSTAR = I - 1 + (ISS - 1)/C + 1
+      IF ( LBSTAR .EQ. Z ) GO TO 70
+C LOWER BOUND L2.
+      CALL OLDL2(N,W,C,LBAL,JDIM)
+      IF ( LBAL .LE. LBSTAR ) GO TO 60
+      LBSTAR = LBAL
+      IF ( LBSTAR .EQ. Z ) GO TO 70
+      GO TO 60
+C
+C REGULAR SOLUTION.
+C
+C LOWER BOUND L3 AND REDUCTION.
+   40 ISUM = 0
+      DO 50 I=1,N
+        ISUM = ISUM + W(I)
+   50 CONTINUE
+   60 Z = 0
+      CALL L3(N,W,C,0,M,DUM,XSTAR,NF,LB3,N+1,XSTARR,ISUM,Z,
+     1        RES,REL,JDIM)
+      IF ( LB3 .GT. LBSTAR ) LBSTAR = LB3
+      IF ( NF .GT. 0 ) GO TO 80
+   70 CONTINUE
+      !WRITE (6,*) 'ESCO PER RIDUZIONE GLOBALE'
+      BACK = 0
+      LB = LBSTAR
+      RETURN
+   80 IF ( NF .EQ. N ) GO TO 100
+C DEFINE THE REDUCED PROBLEM.
+      II = 0
+      DO 90 I=1,N
+        IF ( XSTAR(I) .GT. 0 ) GO TO 90
+        II = II + 1
+        WR(II) = W(I)
+        XSTARR(II) = XSTARR(I) - M
+   90 CONTINUE
+      GO TO 120
+  100 DO 110 I=1,N
+        WR(I) = W(I)
+  110 CONTINUE
+  120 VSTAR = Z - M
+      LB = LBSTAR - M
+C BRANCH-AND-BOUND.                           
+      CALL OLDENUMER(NF,WR,C,XSTARR,VSTAR,LB,BACK,
+     1            X,R,WA,WB,KFIX,FIXIT,XRED,LS,LSB,DUM,XHEU,
+     2            RES,REL,JDIM)
+C RE-BUILD THE SOLUTION.
+      Z = VSTAR + M
+      LB = LB + M
+      II = 0
+      DO 130 I=1,N
+        IF ( XSTAR(I) .GT. 0 ) GO TO 130
+        II = II + 1
+        XSTAR(I) = XSTARR(II) + M
+  130 CONTINUE
+      RETURN
+      END
+      SUBROUTINE OLDENUMER(N,W,C,XSTAR,Z,LBSTAR,BACK,
+     1                  X,R,WA,WB,KFIX,FIXIT,XRED,LS,LSB,LOCAL,XHEU,
+     2                  RES,REL,JDIM)
+C
+C PERFORM A BRANCH-AND-BOUND SEARCH.
+C COMPUTATION OF LOWER BOUNDS L2 AND L3 AT ALL NODES.
+C REDUCTION AT ALL NODES (BUT INITIAL REDUCTION BEFORE CALLING).
+C HEURISTIC ALGORITHMS AT ALL NODES.
+C DOMINANCE TESTS AT ALL NODES.
+C
+C KFIX(K)  = 0 IF NO ITEM WAS FIXED AT LEVEL  K ,
+C          = POINTER TO THE FIRST ITEM FIXED AT LEVEL  K , OTHERWISE.
+C FIXIT(J) = 0  IF ITEM  J  IS NOT FIXED BY REDUCTION,
+C          = POINTER TO THE NEXT ITEM FIXED BY REDUCTION AT THE SAME
+C            LEVEL, OTHERWISE ( = - 1  FOR THE LAST ITEM FIXED BY
+C            REDUCTION AT A LEVEL).
+C LS(I)    = POINTER TO THE LAST ITEM INSERTED IN BIN  I  IF
+C            LSB(I) = N + 1 ,
+C          = POINTER TO THE LAST ITEM WHICH CAN BE (AND WAS) INSERTED
+C            WITH ITEM  LSB(I)  AS LAST BUT ONE, IF LSB(I) .LE. N .
+C
+      INTEGER W(JDIM),C,XSTAR(JDIM),Z,BACK
+      INTEGER X(JDIM),R(JDIM),WA(JDIM),WB(JDIM),KFIX(JDIM),FIXIT(JDIM),
+     1        XRED(JDIM),LS(JDIM),LSB(JDIM),LOCAL(JDIM),XHEU(JDIM),
+     2        RES(JDIM),REL(JDIM)
+      INTEGER ZZ
+C
+C INITIALIZATION.
+C
+      MBACK = BACK
+      BACK = 0
+      JDIRK = 1
+      JJJ = 0
+C FIRST HEURISTIC.
+      CALL FFDLS(N,W,C,ZZ,R,X,LS,LSB,JDIM)
+      IF ( ZZ .GE. Z ) GO TO 20
+      DO 10 I=1,N
+        XSTAR(I) = X(I)
+   10 CONTINUE
+      Z = ZZ
+   20 DO 30 I=1,N
+        FIXIT(I) = 0
+        KFIX(I) = 0
+   30 CONTINUE
+      LASTW = W(N)
+C LOWER BOUND L1.
+      ISUMR = 0
+      DO 40 J=1,ZZ
+        ISUMR = ISUMR + R(J)
+   40 CONTINUE
+      ISUM = ZZ*C - ISUMR
+      LB1 = (ISUM - 1)/C + 1
+      IF ( LB1 .GT. LBSTAR ) LBSTAR = LB1
+      !IF ( LBSTAR .EQ. Z ) WRITE (6,*) 'OTTIMO A'
+      IF ( LBSTAR .EQ. Z ) RETURN
+C IMPROVED LOWER BOUND.
+      ISS = 0
+      DO 50 I=1,N
+        IF ( W(I) + W(N) .LE. C ) GO TO 60
+        ISS = ISS + W(I)
+   50 CONTINUE
+C NO EXIT THIS WAY.
+   60 ISS = ISUM - ISS
+      LB1I = I - 1 + (ISS - 1)/C + 1
+      IF ( LB1I .GT. LBSTAR ) LBSTAR = LB1I
+      !IF ( LBSTAR .EQ. Z ) WRITE (6,*) 'OTTIMO B'
+      IF ( LBSTAR .EQ. Z ) RETURN
+C LOWER BOUND L2.
+      CALL OLDL2(N,W,C,LB2,JDIM)
+      IF ( LB2 .GT. LBSTAR ) LBSTAR = LB2
+      !IF ( LBSTAR .EQ. Z ) WRITE (6,*) 'OTTIMO C'
+      IF ( LBSTAR .EQ. Z ) RETURN
+      KZFFD = ZZ
+C SECOND HEURISTC.
+      MW = 1
+      MB = 1
+      WA(1) = C
+      CALL HBFDS(N,W,C,MB,WA,LOCAL,WB,JDIM)
+      IF ( MB .GE. Z ) GO TO 80
+      DO 70 I=1,N
+        XSTAR(I) = WB(I)
+   70 CONTINUE
+      Z = MB
+      !IF ( LBSTAR .EQ. Z ) WRITE (6,*) 'OTTIMO D'
+      IF ( Z .EQ. LBSTAR ) RETURN
+C THIRD HEURISTIC.
+   80 CALL MWFDS(N,W,C,MW,WA,LOCAL,LBSTAR,WB,JDIM)
+      IF ( MW .GE. Z ) GO TO 100
+      DO 90 I=1,N
+        XSTAR(I) = WB(I)
+   90 CONTINUE
+      Z = MW
+      !IF ( Z .EQ. LBSTAR ) WRITE (6,*) 'OTTIMO E'
+      IF ( Z .EQ. LBSTAR ) RETURN
+C
+C ITERATIVE PART.
+C
+C BACKTRACKING WHEN THE OPTIMAL SOLUTION HAS BEEN UPDATED.
+C FIND THE FIRST ITEM  K  INSERTED IN BIN  Z .
+  100 K = N
+      ZZ = KZFFD - 1
+  110 IF ( FIXIT(K) .NE. 0 ) GO TO 130
+        J = X(K)
+        R(J) = R(J) + W(K)
+        IF ( KFIX(K) .EQ. 0 ) GO TO 120
+        CALL RESTOR(K,ZZ,N,C,KFIX,FIXIT,W,X,R,LASTW,JDIM)
+  120   IF ( R(KZFFD) .EQ. C ) GO TO 140
+  130   K = K - 1
+        JDIRK = - 1
+      GO TO 110
+C FIND THE NEXT ITEM  K  NOT INSERTED IN BIN  Z - 1 .
+  140 K = K - 1
+        JDIRK = - 1
+        IF ( FIXIT(K) .NE. 0 ) GO TO 140
+        J = X(K)
+        IF ( J .LT. ZZ ) GO TO 150
+        R(J) = R(J) + W(K)
+        IF ( KFIX(K) .EQ. 0 ) GO TO 140
+        CALL RESTOR(K,ZZ,N,C,KFIX,FIXIT,W,X,R,LASTW,JDIM)
+      GO TO 140
+  150 IF ( R(ZZ) .EQ. C ) ZZ = ZZ - 1
+C BACKTRACKING ON ITEM  K.
+  160 CONTINUE
+      !IF ( K .EQ. 1 ) WRITE (6,*) 'BACK 1'
+      IF ( K .EQ. 1 ) RETURN
+        IF ( FIXIT(K) .NE. 0 ) GO TO 180
+        !IF ( BACK .EQ. MBACK ) WRITE (6,*) 'BACK=MBACK'
+        IF ( BACK .EQ. MBACK ) RETURN
+        BACK = BACK + 1
+        J = X(K)
+        R(J) = R(J) + W(K)
+        IF ( KFIX(K) .EQ. 0 ) GO TO 170
+        CALL RESTOR(K,ZZ,N,C,KFIX,FIXIT,W,X,R,LASTW,JDIM)
+        IF ( R(J) .LT. C ) GO TO 190
+        GO TO 180
+  170   IF ( R(ZZ) .LT. C ) GO TO 190
+        LSB(ZZ) = N + 1
+        ZZ = ZZ - 1
+  180   K = K - 1
+        JDIRK = - 1
+        GO TO 160
+C FIND THE FIRST BIN FOLLOWING BIN  J  WHERE ITEM  K  CAN BE INSERTED.
+  190   IF ( J .LT. Z - 1 ) GO TO 200
+        K = K - 1
+        JDIRK = - 1
+      GO TO 160
+  200 J = J + 1
+      IF ( R(J) .LT. W(K) ) GO TO 190
+C DOMINANCE TESTS.
+      IF ( LSB(J) .GT. N ) GO TO 250
+      IF ( J .GT. ZZ ) GO TO 250
+      LSJ = LS(J)
+      IF ( W(K) .GT. W(LSJ) ) GO TO 210
+      IF ( W(K) + LASTW .LE. R(J) ) GO TO 250
+      GO TO 190
+  210 LSJ = LSB(J)
+      IF ( W(K) .GT. W(LSJ) ) GO TO 250
+      NEXT = LS(J) - 1
+      LSJ = LS(J)
+  220 IF ( NEXT .LE. K ) GO TO 190
+        IF ( FIXIT(NEXT) .GT. 0 ) GO TO 230
+        IF ( W(NEXT) .GT. W(LSJ) ) GO TO 240
+  230   NEXT = NEXT - 1
+      GO TO 220
+  240 IF ( W(K) + W(NEXT) .GT. R(J) ) GO TO 190
+  250 X(K) = J
+      R(J) = R(J) - W(K)
+      IF ( R(J) .LT. LASTW ) GO TO 260
+      LS(J) = K
+      LSB(J) = N + 1
+      GO TO 270
+  260 LSB(J) = LS(J)
+      LS(J) = K
+  270 IF ( J .LE. ZZ ) GO TO 280
+      ZZ = ZZ + 1
+C FORWARD STEP.
+  280 IF ( K .EQ. N ) GO TO 420
+C
+C COMPUTATION OF A LOCAL LOWER BOUND.
+C ON OUTPUT FROM LCL2, LLB  CONTAINS THE LOWER BOUND, WHILE  NA ,
+C WA  AND  WB  DEFINE THE PROBLEM TO BE REDUCED:
+C NA  ITEMS WITH WEIGHTS IN  WA . FROM  WA(1)  TO  WA(ZZ)  WEIGHTS
+C CORRESPOND TO BINS PARTIALLY FILLED, FROM  WA(ZZ+1)  TO  WA(NA)
+C CORRESPOND TO FREE ITEMS. FROM  WB(1)  TO  WB(ZZ)  POINTERS TO THE
+C BINS, FROM  WB(ZZ+1)  TO  WB(NA)  POINTERS TO THE ITEMS.
+C
+      CALL OLDLCL2(N,W,C,ISUM,R,FIXIT,ZZ,Z,K,NA,WA,WB,LLB,JDIM)
+      IF ( LLB .GE. Z ) GO TO 160
+C
+C REDUCTION.
+C ON RETURN FROM  L3 : NBIN  BINS (IN TOTAL, OLD + NEW), XRED
+C GIVES THE CORRESPONDING PARTIAL SOLUTION, NFREE THE NUMBER OF
+C REMAINING FREE ITEMS. IF NFREE .LT. 0 , L3  TRIED TO MATCH
+C PAIRS OF BINS.
+C
+      CALL L3(NA,WA,C,ZZ,NBIN,LOCAL,XRED,NFREE,LBR,Z,XHEU,ISUM,MR,
+     1        RES,REL,JDIM)
+      IF ( NFREE .LT. 0 ) GO TO 160
+      IF ( NFREE .EQ. 0 ) GO TO 330
+      IF ( LBR .GE. Z ) GO TO 160
+      IF ( MR .GE. Z ) GO TO 320
+      Z = MR
+      DO 290 I=1,N
+        XSTAR(I) = X(I)
+  290 CONTINUE
+      JZ1 = ZZ + 1
+      DO 310 II=JZ1,NA
+        I = WB(II)
+        J = XHEU(II)
+        IF ( J .LE. ZZ ) GO TO 300
+        XSTAR(I) = J
+        GO TO 310
+  300   XSTAR(I) = WB(J)
+  310 CONTINUE
+      !IF ( Z .EQ. LBSTAR ) WRITE (6,*) 'ESCO G'
+      IF ( Z .EQ. LBSTAR ) RETURN
+      IF ( LBR .GE. Z ) GO TO 160
+  320 CALL FIXRED(W,R,NA,WA,WB,ZZ,X,NBIN,XRED,K,KFIX,FIXIT,JDIM)
+      LASTW = WA(NA)
+      GO TO 370
+  330 IF ( NBIN .GE. Z ) GO TO 160
+      Z = NBIN
+      DO 340 I=1,N
+        XSTAR(I) = X(I)
+  340 CONTINUE
+      JZ1 = ZZ + 1
+      DO 360 II=JZ1,NA
+        I = WB(II)
+        J = XRED(II)
+        IF ( J .LE. ZZ ) GO TO 350
+        XSTAR(I) = J
+        GO TO 360
+  350   XSTAR(I) = WB(J)
+  360 CONTINUE
+      !IF ( Z .EQ. LBSTAR ) WRITE (6,*) 'ESCO H'
+      IF ( Z .EQ. LBSTAR ) RETURN
+      GO TO 160
+C LOCAL HEURISTICS.
+C ON OUTPUT FROM FIXRED, THE  NA  FREE WEIGHTS ARE IN  WA , THE
+C CORRESPONDING POINTERS IN  XRED .
+  370 MB = ZZ
+      CALL HBFDS(NA,WA,C,MB,R,LOCAL,WB,JDIM)
+      IF ( MB .GE. Z ) GO TO 380
+      CALL UPDATE(N,Z,XSTAR,NA,MB,X,WB,XRED,JDIM)
+      !IF ( Z .EQ. LBSTAR ) WRITE (6,*) 'ESCO I'
+      IF ( Z .EQ. LBSTAR ) RETURN
+      IF ( LLB .GE. Z ) GO TO 160
+  380 MW = ZZ
+      CALL MWFDS(NA,WA,C,MW,R,LOCAL,LLB,WB,JDIM)
+      IF ( MW .GE. Z ) GO TO 390
+      CALL UPDATE(N,Z,XSTAR,NA,MW,X,WB,XRED,JDIM)
+      !IF ( Z .EQ. LBSTAR ) WRITE (6,*) 'ESCO J'
+      IF ( Z .EQ. LBSTAR ) RETURN
+      IF ( LLB .GE. Z ) GO TO 160
+  390 IF (III .EQ. 0) JJJ = K
+      IF (III .EQ. 0) III = 1
+      K = K + 1
+      IF ( JDIRK .EQ. 1 ) GO TO 410
+      DO 400 II=1,ZZ
+        IF ( LS(II) .LT. K ) GO TO 400
+        LS(II) = LSB(II)
+        LSB(II) = N + 1
+  400 CONTINUE
+  410 IF ( FIXIT(K) .NE. 0 ) GO TO 370
+      III = 0
+      J = 0
+C
+C MODIFICA: Se l'oggetto attuale K è uguale a quello fissato
+C           precedentemente (JJJ), considero per K soltanto
+C           posizioni da X(JJJ) in avanti.
+C
+      IF ( JJJ .LE. 0 ) GOTO 190
+      IF ( FIXIT(JJJ) .EQ. 0 .AND. W(K) .EQ. W(JJJ) ) J = X(JJJ) - 1
+      GO TO 190
+  420 Z = ZZ
+      DO 430 I=1,N
+        XSTAR(I) = X(I)
+  430 CONTINUE
+      KZFFD = Z
+      IF ( Z .GT. LBSTAR ) GO TO 100
+      !WRITE (6,*) 'ESCO ALLA FINE'
+      RETURN
+      END
+C
+      SUBROUTINE OLDLCL2(N,W,C,ISUM,R,FIXIT,ZZ,Z,K,NA,WA,WB,LLB,JDIM)
+C
+C COMPUTE A LOCAL LOWER BOUND AND EXECUTE A PREPROCESSING
+C FOR REDUCTION.
+C
+      INTEGER W(JDIM),R(JDIM),WA(JDIM),WB(JDIM),FIXIT(JDIM),C,ZZ,Z
+      I = N
+   10 IF ( FIXIT(I) .EQ. 0 ) GO TO 20
+      I = I - 1
+      GO TO 10
+   20 JWN = W(I)
+      ISS = ISUM
+      KCB = 0
+      DO 30 J=1,ZZ
+        WB(J) = J
+        IF ( R(J) .GE. JWN ) GO TO 30
+        ISS = ISS - (C - R(J))
+        KCB = KCB + 1
+   30 CONTINUE
+      LLB = KCB + (ISS - 1)/C + 1
+      IF ( LLB .GE. Z ) RETURN
+      CALL SORTI2(ZZ,R,WB,JDIM)
+      DO 40 I=1,ZZ
+        IWBI = WB(I)
+        WA(I) = C - R(IWBI)
+   40 CONTINUE
+      K1 = K + 1
+      NA = ZZ
+      DO 50 I=K1,N
+        IF ( FIXIT(I) .NE. 0 ) GO TO 50
+        NA = NA + 1
+        WA(NA) = W(I)
+        WB(NA) = I
+   50 CONTINUE
+      CALL OLDL2(NA,WA,C,LBA,JDIM)
+      IF ( LBA .GT. LLB ) LLB = LBA
+      RETURN
+      END
+      SUBROUTINE OLDL2(N,W,C,LB,JDIM)
+C
+C COMPUTE LOWER BOUND  L2 .
+C
+      INTEGER W(JDIM),C
+      IF ( W(1) .GT. C/2 ) GO TO 40
+C
+C CASE 1: ALL ITEMS ARE .LE. C/2 .
+C
+      LB = 0
+      IRAT = C/W(1)
+      II = 2
+   10 DO 20 I=II,N
+        IR = C/W(I)
+        IF ( IR .GT. IRAT ) GO TO 30
+   20 CONTINUE
+      NLB = (N - 1)/IRAT + 1
+      IF ( LB .LT. NLB ) LB = NLB
+      RETURN
+   30 NLB = (I - 2)/IRAT + 1
+      IF ( LB .LT. NLB ) LB = NLB
+      IF ( (N - 1)/IR + 1 .LE. LB ) RETURN
+      II = I
+      IRAT = IR
+      GO TO 10
+C
+C CASE 2: THERE EXIST ITEMS  .GT. C/2 .
+C
+   40 CALL SEARCH(N,W,FLOAT(C)/2.,N12,JDIM)
+C N12 = N1 + N2 .
+      LB = N12
+      IF ( N12 .EQ. N ) RETURN
+      N12P1 = N12 + 1
+      NMN12 = N - N12
+      JBW = C - W(N12)
+C I2 = NEXT ITEM TO BE CONSIDERED FOR POSSIBLE INCLUSION IN  N2 .
+C I3 = NEXT ITEM TO BE CONSIDERED FOR POSSIBLE INCLUSION IN  N3 .
+      I2 = N12
+      I3 = N12P1
+   50 JWW = W(I3)
+   60 I3 = I3 + 1
+      IF ( I3 .GT. N ) GO TO 70
+      IF ( W(I3) .GE. JWW ) GO TO 60
+   70 JWST = W(I3-1)
+      JBWST = C - JWST
+      N3 = I3 - N12P1
+   80 IF ( W(I2) .GT. JBWST ) GO TO 100
+      IF ( I2 .EQ. 1 ) GO TO 90
+      I2 = I2 - 1
+      GO TO 80
+   90 N2 = N12
+      GO TO 110
+  100 N2 = N12 - I2
+  110 NN = N2*(JBW/JWST)
+      JADD = 0
+      IF ( N3 .GT. NN ) JADD = (N3 - NN - 1)/(C/JWST) + 1
+      NLB = N12 + JADD
+      IF ( LB .LT. NLB ) LB = NLB
+      NADD = (NMN12 - NN - 1)/(C/JWST) + 1
+      IF ( N12 + NADD .LE. LB ) RETURN
+      IF ( I3 .GT. N ) RETURN
+      GO TO 50
+      END
+
