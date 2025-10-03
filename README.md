@@ -42,7 +42,7 @@ The CVRPSEP package is a collection of routines dedicated to the Capacitated Veh
 
 ### Branch-and-price
 
-BELOV is a branch-and-cut-and-price algorithm for the CSP proposed by G. Belov and G. Scheithauer in [A branch-and-cut-and-price algorithm for one dimensional stock cutting and two-dimensional two-stage cutting](https://www.sciencedirect.com/science/article/pii/S0377221704006150). *European Journal of Operational Research*, 171(1):85–106, 2006. The code is not available online, but it can be obtained from the authors upon request.
+BELOV is a branch-and-cut-and-price algorithm for the CSP proposed by G. Belov and G. Scheithauer in [A branch-and-cut-and-price algorithm for one dimensional stock cutting and two-dimensional two-stage cutting](https://www.sciencedirect.com/science/article/pii/S0377221704006150). *European Journal of Operational Research*, 171(1):85–106, 2006. The code is available on an [external website](https://github.com/CaPaD-cutting-and-packing/BranchCutPrice).
 
 SCIP-BP is a branch-and-price algorithm for the BPP provided as an example when downloading the [SCIP Otimization Suite](https://www.scipopt.org/). The code is available on an [external website](https://scipopt.org/scip/doc/html/BINPACKING_MAIN.php).
 
