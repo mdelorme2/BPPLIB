@@ -58,8 +58,6 @@ VPSolver is a software than can solve vector packing problems using pseudo-polyn
 
 ### Computer codes which appeared after the publication of the BPPLIB
 
-IADA is an iterative aggregation/disaggregation algorithm to solve pseudo-polynomial network flow models with side constraints (including the BPP). It was proposed by F. Clautiaux, S. Hanafi, R. Macedo, M-E Voge, and C. Alves in [Iterative aggregation and disaggregation algorithm for pseudo-polynomial network flow models with side constraints](https://www.sciencedirect.com/science/article/pii/S0377221716308037). *European Journal of Operational Research*, 258(2):467–477, 2017. The code is not available online, but it can be obtained from the authors upon request.
-
 MIM is an algorithm based on an arc-flow formulation with Meet-in-the-Middle patterns and further reduction crieria, solved through an ILP solver (Cplex in the provided implementation). It was proposed by J. F. Côté and M. Iori in [The Meet-in-the-Middle Principle for Cutting and Packing Problems](https://pubsonline.informs.org/doi/10.1287/ijoc.2018.0806). *INFORMS Journal on Computing*, 30(4): 646-661, 2018. The code is available on an [external website](https://sites.google.com/view/jfcote/).
 
 [REFLECT](Codes) is an algorithm based on a pseudo-polynomial formulation of the CSP solved through an ILP solver. It uses the model proposed by M. Delorme and M. Iori in [Enhanced Pseudo-Polynomial Formulations for Bin Packing and Cutting Stock Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2018.0880). *INFORMS Journal on Computing*, 32(1):101-119, 2020.
