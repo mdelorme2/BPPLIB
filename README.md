@@ -70,6 +70,8 @@ NF-F is a branch-and-price algorithm to solve pseudo-polynomial network flow mod
 
 BCCF is a numerically exact branch-and-price algorithm to solve the BPP. It uses the techniques proposed by R. Baldacci, S. Coniglio , J.-F. Cordeau , and F. Furini in [A Numerically Exact Algorithm for the Bin-Packing Problem](https://pubsonline.informs.org/doi/10.1287/ijoc.2022.0257). *INFORMS Journal on Computing*, 36(1): 141-162, 2023. The code is available on an [external website](https://github.com/stefanoconiglio/A-Numerically-Exact-Algorithm-for-the-Bin-Packing-Problem).
 
+SSBCP is a branch-cut-and-price algorithm to solve cutting stock problems with strong relaxations using set covering (packing) formulations. It uses the techniques proposed by R.F.F. da Silva and R.C.S. Schouery in [Solving Cutting Stock Problems via an Extended Ryan-Foster Branching Scheme and Fast Column Generation](https://pubsonline.informs.org/doi/10.1287/ijoc.2023.0399). *INFORMS Journal on Computing*, forthcoming. The code is available on an [external website](https://gitlab.com/renanfernandofranco/solving-cutting-stock-problems-via-an-extended-ryan-foster-branching-scheme-and-fast-column-generation).
+
 ## Benchmarks
 
 All instances are given in the two following formats:
@@ -103,6 +105,8 @@ and can be downloaded from [here](Instances/Benchmarks) in both the BPP and the 
 **ANI AI** are the difficult instances (according to the standards of that time) proposed by M. Delorme, M. Iori, and S. Martello in [Bin Packing and Cutting Stock Problems: Mathematical Models and Exact Algorithms](https://www.sciencedirect.com/science/article/pii/S0377221716302491). *European Journal of Operational Research*, 255(1):1-20, 2016.
 
 **GI** are the instances proposed by T. Gschwind and S. Irnich in [Dual Inequalities for Stabilized Column Generation Revisited](https://pubsonline.informs.org/doi/10.1287/ijoc.2015.0670). *INFORMS Journal on Computing*, 28(1):175-194, 2016.
+
+**SSTriples** are the difficult instances proposed by R.F.F. da Silva and R.C.S. Schouery in [Solving Cutting Stock Problems via an Extended Ryan-Foster Branching Scheme and Fast Column Generation](https://pubsonline.informs.org/doi/10.1287/ijoc.2023.0399). *INFORMS Journal on Computing*, forthcoming.
 
 The solution of all instances can be found [here](Instances/Solutions). 
 
