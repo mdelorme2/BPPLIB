@@ -12,11 +12,11 @@ The bin packing problem (BPP) can be informally defined in a very simple way. We
 
 Similarly, in the cutting stock problem (CSP), we are given $m$ item types, each having an integer weight $w_j$ and an integer demand $d_j (j = 1, ..., m)$, and an unlimited number of identical bins (frequently called rolls in the literature) of integer capacity $c$. The objective is to produce $d_j$ copies of each item type $j$ using the minimum number of bins so that the total weight packed in any bin does not exceed its capacity. A CSP instance can be easily transformed into an equivalent BPP instance and vice-versa.
 
-For a recent survey on these problems, see M. Delorme, M. Iori, and S. Martello. [Bin Packing and Cutting Stock Problems: Mathematical Models and Exact Algorithms](https://www.sciencedirect.com/science/article/pii/S0377221716302491). *European Journal of Operational Research*, 255(1):1–20, 2016.
-
-## Previous surveys on the BPP and the CSP
+## Surveys on the BPP and the CSP
 
 G. Galambos, S. Martello, and D. Vigo. [An updated overview of bin packing approximation algorithms](https://link.springer.com/rwe/10.1007/978-1-4614-6624-6_35-1). In P.M. Pardalos, D.-Z. Du, and M.T. Thai, editors, *Handbook of Combinatorial Optimization*, pages 1-85, Springer New York, 2025.
+
+M. Delorme, M. Iori, and S. Martello. [Bin Packing and Cutting Stock Problems: Mathematical Models and Exact Algorithms](https://www.sciencedirect.com/science/article/pii/S0377221716302491). *European Journal of Operational Research*, 255(1):1–20, 2016.
 
 E.G. Coffman Jr., J. Csirik, G. Galambos, S. Martello, and D. Vigo. [Bin packing approximation algorithms: Survey and classification](https://link.springer.com/rwe/10.1007/978-1-4419-7997-1_35). In P.M. Pardalos, D.-Z. Du, and R.L. Graham, editors, *Handbook of Combinatorial Optimization*, pages 455-531, Springer New York, 2013.
 
