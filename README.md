@@ -16,6 +16,8 @@ For a recent survey on these problems, see M. Delorme, M. Iori, and S. Martello.
 
 ## Previous surveys on the BPP and the CSP
 
+G. Galambos, S. Martello, and D. Vigo. [An updated overview of bin packing approximation algorithms](https://link.springer.com/rwe/10.1007/978-1-4614-6624-6_35-1). In P.M. Pardalos, D.-Z. Du, and M.T. Thai, editors, *Handbook of Combinatorial Optimization*, pages 1-85, Springer New York, 2025.
+
 E.G. Coffman Jr., J. Csirik, G. Galambos, S. Martello, and D. Vigo. [Bin packing approximation algorithms: Survey and classification](https://link.springer.com/rwe/10.1007/978-1-4419-7997-1_35). In P.M. Pardalos, D.-Z. Du, and R.L. Graham, editors, *Handbook of Combinatorial Optimization*, pages 455-531, Springer New York, 2013.
 
 G. Wäscher, H. Haußner, and H. Schumann. [An improved typology of cutting and packing problems](https://www.sciencedirect.com/science/article/pii/S037722170600292X). *European Journal of Operational Research*, 183(3):1109–1130, 2007.
